@@ -147,11 +147,12 @@ const TodosScreen = () => {
 
 			<FlatList
 				data={todos}
-				renderItem={({ item }) => (
+				renderItem={({ item, index }) => (
 					<Todo
 						todoId={item.todoId}
 						todoMessage={item.todoMessage}
 						todoCompleted={item.todoCompleted}
+						todoIndex={index}
 					/>
 				)}
 				keyExtractor={(item) => item.todoId}

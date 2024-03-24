@@ -9,7 +9,7 @@ import {
 } from "../redux/todosSlice";
 import UpdateModal from "./UpdateModal";
 
-const Todo = ({ todoId, todoMessage, todoCompleted }) => {
+const Todo = ({ todoId, todoMessage, todoCompleted, todoIndex }) => {
 	const dispatch = useDispatch();
 
 	const themes = useSelector((state) => state.userReducer.themes);
@@ -63,9 +63,9 @@ const Todo = ({ todoId, todoMessage, todoCompleted }) => {
 				// 			: themes[preferredTheme].secondary,
 				// }}
 				backgroundColor={
-					todoId % 2 == 1
-						? themes[preferredTheme].primary
-						: themes[preferredTheme].secondary
+					todoIndex % 2 == 1
+						? themes[preferredTheme].secondary
+						: themes[preferredTheme].primary
 				}
 				themes={themes[preferredTheme]}
 				todoMessage={todoMessage}
@@ -91,9 +91,9 @@ const Todo = ({ todoId, todoMessage, todoCompleted }) => {
 					alignItems: "center",
 					justifyContent: "center",
 					backgroundColor:
-						todoId % 2 == 1
-							? themes[preferredTheme].primary
-							: themes[preferredTheme].secondary,
+						todoIndex % 2 == 1
+							? themes[preferredTheme].secondary
+							: themes[preferredTheme].primary,
 					borderRadius: 10,
 				}}
 			>

@@ -20,7 +20,7 @@ const CustomInput = ({
 		<Controller
 			name={name}
 			control={control}
-			// rules={rules}
+			rules={rules}
 			render={({ field: { value, onChange }, fieldState: { error } }) => (
 				<>
 					<TextInput

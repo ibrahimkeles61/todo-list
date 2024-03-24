@@ -30,7 +30,6 @@ export default LoginScreen = ({ navigation }) => {
 	const signIn = async ({ email, password }) => {
 		signInWithEmailAndPassword(auth, email, password).catch((err) => {
 			console.log(err.message);
-
 			if (err.message == "Firebase: Error (auth/invalid-credential).") {
 				set_show_password_wrong(true);
 			}
@@ -51,13 +50,13 @@ export default LoginScreen = ({ navigation }) => {
 				name="email"
 				control={control}
 				placeholder="Email"
-				// rules={{
-				// 	required: "Email Boş Bırakılamaz!",
-				// 	pattern: {
-				// 		value: EMAIL_REGEX,
-				// 		message: "Bu email düzgün gözükmüyor.",
-				// 	},
-				// }}
+				rules={{
+					required: "Email Boş Bırakılamaz!",
+					pattern: {
+						value: EMAIL_REGEX,
+						message: "Bu email düzgün gözükmüyor.",
+					},
+				}}
 			/>
 
 			{/* PASSWORD INPUT */}
@@ -66,7 +65,7 @@ export default LoginScreen = ({ navigation }) => {
 				control={control}
 				placeholder="Şifre"
 				secureTextEntry
-				// rules={{ required: "Şifre Boş Bırakılamaz!" }}
+				rules={{ required: "Şifre Boş Bırakılamaz!" }}
 				customStyles={{
 					marginTop: 10,
 				}}

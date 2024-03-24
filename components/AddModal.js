@@ -24,7 +24,7 @@ const AddModal = ({ modalVisible, themes, handleAddModalVisibility }) => {
 		const newTodo = {
 			todoMessage: data.todo_message,
 			todoCompleted: false,
-			todoId: preTodos.length + 1,
+			todoId: preTodos[preTodos.length - 1].todoId + 1,
 		};
 
 		dispatch(addTodo(newTodo));
