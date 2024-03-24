@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const userSlice = createSlice({
 	name: "user",
 	initialState: {
-		loggedIn: true,
+		loggedIn: false,
 		themes: {
 			dark: {
 				text: "#f5f5f9",
@@ -29,11 +29,20 @@ const userSlice = createSlice({
 				: (state.preferredTheme = "light");
 		},
 
-		toggleLoggedIn: (state) => {
-			state.loggedIn = !state.loggedIn;
+		loginOnState: (state) => {
+			state.loggedIn = true;
+		},
+
+		logoutOnState: (state) => {
+			state.loggedIn = false;
+		},
+
+		setUser: (state, { payload }) => {
+			state.user = payload;
 		},
 	},
 });
 
 export default userSlice.reducer;
-export const { togglePreferredTheme, toggleLoggedIn } = userSlice.actions;
+export const { togglePreferredTheme, loginOnState, logoutOnState, setUser } =
+	userSlice.actions;

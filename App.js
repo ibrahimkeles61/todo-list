@@ -1,12 +1,16 @@
 import { StyleSheet, Text, View, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 import store from "./redux/store";
+import { loginOnState, logoutOnState, setUser } from "./redux/userSlice";
 import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import TodosScreen from "./screens/TodosScreen";
+
+import { auth, onAuthStateChanged } from "./firebase";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,12 +37,27 @@ const LoggedOutStack = () => (
 );
 
 function AppWithoutStore() {
+	const dispatch = useDispatch();
 	const loggedIn = useSelector((state) => state.userReducer.loggedIn);
 	const themes = useSelector((state) => state.userReducer.themes);
 
 	const preferredTheme = useSelector(
 		(state) => state.userReducer.preferredTheme
 	);
+
+	useEffect(() => {
+		const monitorAuthState = async () => {
+			onAuthStateChanged(auth, (user) => {
+				if (user) {
+					dispatch(loginOnState());
+				} else {
+					dispatch(logoutOnState());
+				}
+			});
+		};
+
+		monitorAuthState();
+	}, []);
 
 	return (
 		<View

@@ -1,15 +1,41 @@
 import { View, Text, FlatList, TouchableOpacity, Animated } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
-import { toggleLoggedIn } from "../redux/userSlice";
+import SaveButtonForChanges from "../components/SaveButtonForChanges";
 import SwitchButton from "../components/SwitchButton";
 import Todo from "../components/Todo";
 import AddModal from "../components/AddModal";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { setTodos, clearTodos } from "../redux/todosSlice";
+
+import { auth, signOut, db, doc, getDoc } from "../firebase";
 
 const TodosScreen = () => {
 	const dispatch = useDispatch();
+	const [goodToGo, setGoodToGo] = useState(false);
+
+	useEffect(() => {
+		const getTodosFromFirestore = async () => {
+			const todosSnap = await getDoc(doc(db, "users", auth.currentUser?.uid));
+			console.log(auth);
+
+			if (todosSnap.exists()) {
+				const todos = await todosSnap.data().todos;
+
+				todos.sort((x, y) => x.todoId - y.todoId);
+
+				dispatch(setTodos(todos));
+				setGoodToGo(true);
+			} else {
+				dispatch(clearTodos());
+				setGoodToGo(true);
+			}
+		};
+
+		getTodosFromFirestore();
+	}, []);
 
 	const [addModalVisibility, setAddModalVisibility] = useState(false);
 
@@ -38,9 +64,11 @@ const TodosScreen = () => {
 		fadeAnimation(), setAddModalVisibility(!addModalVisibility)
 	);
 
-	const handleLogOut = () => dispatch(toggleLoggedIn());
+	const handleLogOut = async () => {
+		signOut(auth).catch((err) => console.log(err.message));
+	};
 
-	return (
+	return goodToGo ? (
 		<View
 			style={{
 				flex: 1,
@@ -132,6 +160,9 @@ const TodosScreen = () => {
 					marginTop: 10,
 				}}
 			/>
+
+			<SaveButtonForChanges />
+
 			{/* ACTUAL SCREEN */}
 
 			<AddModal
@@ -140,6 +171,8 @@ const TodosScreen = () => {
 				handleAddModalVisibility={handleAddModalVisibility}
 			/>
 		</View>
+	) : (
+		<LoadingSpinner />
 	);
 };
 

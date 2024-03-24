@@ -3,18 +3,48 @@ import { useDispatch, useSelector } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
 import { useState } from "react";
 
-import { toggleTodo } from "../redux/todosSlice";
+import {
+	toggleTodo,
+	change_save_button_visibility_for_changes,
+} from "../redux/todosSlice";
 import UpdateModal from "./UpdateModal";
 
 const Todo = ({ todoId, todoMessage, todoCompleted }) => {
+	const dispatch = useDispatch();
+
 	const themes = useSelector((state) => state.userReducer.themes);
 	const preferredTheme = useSelector(
 		(state) => state.userReducer.preferredTheme
 	);
 
-	const dispatch = useDispatch();
+	// veritabanindaki deger hep bi onceki degisikligi tutuyo oluyo, statete falsesa db de true oluyo bu yuzden, o yuzden bu isi ya burdaki cirkin yontemle yapicam yada su an yaptigin diger cirkin yontemle:
 
-	const handleToggleTodo = () => dispatch(toggleTodo({ todoId }));
+	// const handleToggleTodo = async () => {
+	// 	const todosSnap = await getDoc(doc(db, "users", auth.currentUser?.email));
+
+	// 	if (todosSnap.exists()) {
+	// 		const todos = todosSnap.data().todos;
+
+	// 		const theTodoHasToChange = todos.find((todo) => todo.todoId === todoId);
+
+	// 		theTodoHasToChange.todoCompleted = !theTodoHasToChange.todoCompleted;
+
+	// 		const newTodos = todos.filter((todo) => todo.todoId !== todoId);
+
+	// 		newTodos.push(theTodoHasToChange);
+
+	// 		await setDoc(doc(db, "users", auth.currentUser.email), {
+	// 			todos: newTodos,
+	// 		});
+
+	// 		dispatch(toggleTodo({ todoId }));
+	// 	}
+	// };
+
+	const handleToggleTodo = () => {
+		dispatch(toggleTodo({ todoId }));
+		dispatch(change_save_button_visibility_for_changes(true));
+	};
 
 	const [updateMode, setUpdateMode] = useState(false);
 

@@ -3,7 +3,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
-import { removeTodo, updateTodo } from "../redux/todosSlice";
+import {
+	removeTodo,
+	updateTodo,
+	change_save_button_visibility_for_changes,
+} from "../redux/todosSlice";
 import CustomInput from "./CustomInput";
 import SubmitButton from "./SubmitButton";
 
@@ -29,9 +33,14 @@ const UpdateModal = ({
 	const saveTodo = (data) => {
 		dispatch(updateTodo({ todoId, todoMessage: data.todo_message }));
 		handleUpdateModalVisibility();
+		dispatch(change_save_button_visibility_for_changes(true));
 	};
 
-	const deleteTodo = () => dispatch(removeTodo({ todoId }));
+	const deleteTodo = () => {
+		dispatch(removeTodo({ todoId }));
+		handleUpdateModalVisibility();
+		dispatch(change_save_button_visibility_for_changes(true));
+	};
 
 	return (
 		<View

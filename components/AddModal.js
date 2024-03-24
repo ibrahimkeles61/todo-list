@@ -1,14 +1,18 @@
 import { View, Text, TouchableOpacity, Keyboard, Animated } from "react-native";
 import { useForm } from "react-hook-form";
 import { Ionicons } from "@expo/vector-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { addTodo } from "../redux/todosSlice";
 import CustomInput from "./CustomInput";
 import SubmitButton from "./SubmitButton";
 
+import { auth, db, doc, setDoc } from "../firebase";
+
 const AddModal = ({ modalVisible, themes, handleAddModalVisibility }) => {
 	const dispatch = useDispatch();
+
+	const preTodos = useSelector((state) => state.todosReducer.todos);
 
 	const {
 		control,
@@ -16,9 +20,18 @@ const AddModal = ({ modalVisible, themes, handleAddModalVisibility }) => {
 		formState: { error },
 	} = useForm();
 
-	const saveTodo = (data) => {
-		dispatch(addTodo(data.todo_message));
-		// console.log(data.todo_message);
+	const saveTodo = async (data) => {
+		const newTodo = {
+			todoMessage: data.todo_message,
+			todoCompleted: false,
+			todoId: preTodos.length + 1,
+		};
+
+		dispatch(addTodo(newTodo));
+
+		await setDoc(doc(db, "users", auth.currentUser.uid), {
+			todos: [...preTodos, newTodo],
+		});
 	};
 
 	// const [keyboardShown, setKeyboardShown] = useState(false);

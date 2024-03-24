@@ -1,11 +1,15 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import CustomInput from "../components/CustomInput";
 import SubmitButton from "../components/SubmitButton";
 
+import { auth, createUserWithEmailAndPassword } from "../firebase";
+
 const SignUpScreen = ({ navigation }) => {
+	const dispatch = useDispatch();
+
 	const themes = useSelector((state) => state.userReducer.themes);
 	const preferredTheme = useSelector(
 		(state) => state.userReducer.preferredTheme
@@ -21,8 +25,10 @@ const SignUpScreen = ({ navigation }) => {
 	const EMAIL_REGEX =
 		/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-	const signUp = (data) => {
-		//
+	const signUp = async ({ email, password }) => {
+		createUserWithEmailAndPassword(auth, email, password).catch((err) =>
+			console.log(err.message)
+		);
 	};
 
 	return (
@@ -75,6 +81,7 @@ const SignUpScreen = ({ navigation }) => {
 				name="password"
 				control={control}
 				placeholder="Şifrenizi Giriniz"
+				secureTextEntry
 				rules={{
 					required: "Şifre Boş Bırakılamaz!",
 					minLength: {
@@ -92,6 +99,7 @@ const SignUpScreen = ({ navigation }) => {
 				name="password_repeat"
 				control={control}
 				placeholder="Şifrenizi Tekrarlayınız"
+				secureTextEntry
 				rules={{
 					required: "Şifre Boş Bırakılamaz!",
 					validate: (value) =>
@@ -104,7 +112,7 @@ const SignUpScreen = ({ navigation }) => {
 
 			<SubmitButton
 				handleSubmit={handleSubmit}
-				signUp={signUp}
+				submitFunction={signUp}
 				title="KAYDOL"
 			/>
 
