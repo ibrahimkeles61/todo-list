@@ -22,3 +22,8 @@ Kullanıcı çıkış yapmadığı sürece cihazında hatırlanması için: reac
 
 Projede, kullanıcı giriş yapdıktan sonra yapılacaklar listesi sayfası karşısına çıkıyor. Burada yeni madde ekleyebilir, var olanları güncelleyebilir veya silebilir. Ancak belli bir miktar yeni madde ekledikten sonra karşısına premium üyelik gerektiğini belirten bir katman çıkıyor. Ödeme yapıp üye olduktan sonra eklemeye devam edebiliyor.
 
+## Görseller
+
+Henüz ödeme kısmı bitmediği için tüm projeyi buraya koymuyorum ama tek bir örnek olarak, yapılacaklar listesi sayfası şöyle:
+
+![sample](https://github.com/ibrahimkeles61/todo-list/blob/master/project-views/7.jpg?raw=true)
