@@ -26,4 +26,4 @@ Projede, kullanıcı giriş yapdıktan sonra yapılacaklar listesi sayfası kar�
 
 Henüz ödeme kısmı bitmediği için tüm projeyi buraya koymuyorum ama tek bir örnek olarak, yapılacaklar listesi sayfası şöyle:
 
-![sample](https://github.com/ibrahimkeles61/todo-list/blob/master/project-views/7.jpg?raw=true)
+![sample](https://github.com/ibrahimkeles61/todo-list/blob/master/project-views/7.jpg?raw=true | width=300)
