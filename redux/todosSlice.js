@@ -5,78 +5,7 @@ const todosSlice = createSlice({
 	name: "todos",
 	initialState: {
 		save_button_visibility_for_changes: false,
-		todos: [
-			// {
-			// 	todoId: 1,
-			// 	todoMessage: "gss borcunu öde",
-			// 	todoCompleted: false,
-			// },
-			// {
-			// 	todoId: 2,
-			// 	todoMessage: "haftalık sporunu yap",
-			// 	todoCompleted: true,
-			// },
-			// {
-			// 	todoId: 3,
-			// 	todoMessage: "gss borcunu öde",
-			// 	todoCompleted: false,
-			// },
-			// {
-			// 	todoId: 4,
-			// 	todoMessage: "haftalık sporunu yap",
-			// 	todoCompleted: true,
-			// },
-			// {
-			// 	todoId: 5,
-			// 	todoMessage: "gss borcunu öde",
-			// 	todoCompleted: false,
-			// },
-			// {
-			// 	todoId: 6,
-			// 	todoMessage: "haftalık sporunu yap",
-			// 	todoCompleted: true,
-			// },
-			// {
-			// 	todoId: 7,
-			// 	todoMessage: "gss borcunu öde",
-			// 	todoCompleted: false,
-			// },
-			// {
-			// 	todoId: 8,
-			// 	todoMessage: "haftalık sporunu yap",
-			// 	todoCompleted: true,
-			// },
-			// {
-			// 	todoId: 9,
-			// 	todoMessage: "gss borcunu öde",
-			// 	todoCompleted: true,
-			// },
-			// {
-			// 	todoId: 10,
-			// 	todoMessage: "haftalık sporunu yap",
-			// 	todoCompleted: false,
-			// },
-			// {
-			// 	todoId: 11,
-			// 	todoMessage: "gss borcunu öde",
-			// 	todoCompleted: true,
-			// },
-			// {
-			// 	todoId: 12,
-			// 	todoMessage: "haftalık sporunu yap",
-			// 	todoCompleted: false,
-			// },
-			// {
-			// 	todoId: 13,
-			// 	todoMessage: "gss borcunu öde",
-			// 	todoCompleted: true,
-			// },
-			// {
-			// 	todoId: 14,
-			// 	todoMessage: "haftalık sporunu yap",
-			// 	todoCompleted: false,
-			// },
-		],
+		todos: [],
 	},
 	reducers: {
 		setTodos: (state, { payload }) => {

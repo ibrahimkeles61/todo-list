@@ -21,6 +21,10 @@ const userSlice = createSlice({
 			},
 		},
 		preferredTheme: "light",
+		accountCredentialsOnFirebase: {
+			accountEmailOnFirebase: "",
+			accountCreatedOnFirebase: "",
+		},
 	},
 	reducers: {
 		togglePreferredTheme: (state) => {
@@ -40,9 +44,21 @@ const userSlice = createSlice({
 		setUser: (state, { payload }) => {
 			state.user = payload;
 		},
+
+		setAccountCredentialsOnFirebase: (state, { payload }) => {
+			state.accountCredentialsOnFirebase.accountCreatedOnFirebase =
+				payload.account_created_time;
+			state.accountCredentialsOnFirebase.accountEmailOnFirebase =
+				payload.account_email;
+		},
 	},
 });
 
 export default userSlice.reducer;
-export const { togglePreferredTheme, loginOnState, logoutOnState, setUser } =
-	userSlice.actions;
+export const {
+	togglePreferredTheme,
+	loginOnState,
+	logoutOnState,
+	setUser,
+	setAccountCredentialsOnFirebase,
+} = userSlice.actions;

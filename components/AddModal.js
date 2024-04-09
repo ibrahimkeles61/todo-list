@@ -14,6 +14,17 @@ const AddModal = ({ modalVisible, themes, handleAddModalVisibility }) => {
 
 	const preTodos = useSelector((state) => state.todosReducer.todos);
 
+	// console.log("pretodos#1: ", preTodos);
+
+	const account_credentials_on_firebase = useSelector(
+		(state) => state.userReducer.accountCredentialsOnFirebase
+	);
+
+	// console.log(
+	// 	"account_credentials_on_firebase#1: ",
+	// 	account_credentials_on_firebase
+	// );
+
 	const {
 		control,
 		handleSubmit,
@@ -21,15 +32,19 @@ const AddModal = ({ modalVisible, themes, handleAddModalVisibility }) => {
 	} = useForm();
 
 	const saveTodo = async (data) => {
+		// console.log("preTodos#2: ", preTodos);
 		const newTodo = {
 			todoMessage: data.todo_message,
 			todoCompleted: false,
-			todoId: preTodos[preTodos.length - 1].todoId + 1,
+			todoId:
+				preTodos.length == 0 ? 1 : preTodos[preTodos.length - 1].todoId + 1,
 		};
 
 		dispatch(addTodo(newTodo));
 
 		await setDoc(doc(db, "users", auth.currentUser.uid), {
+			accountEmail: account_credentials_on_firebase.accountEmailOnFirebase,
+			accountCreated: account_credentials_on_firebase.accountCreatedOnFirebase,
 			todos: [...preTodos, newTodo],
 		});
 	};

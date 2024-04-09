@@ -7,6 +7,8 @@ import {
 	signInWithEmailAndPassword,
 	signOut,
 	onAuthStateChanged,
+	sendEmailVerification,
+	deleteUser,
 } from "firebase/auth";
 import {
 	getFirestore,
@@ -48,6 +50,8 @@ export {
 	getDoc,
 	updateDoc,
 	deleteDoc,
+	sendEmailVerification,
+	deleteUser,
 };
 
 // rules_version = '2';

@@ -1,6 +1,6 @@
 import { View, Text, FlatList, TouchableOpacity, Animated } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Ionicons, AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 import { useState, useRef, useEffect } from "react";
 
 import SaveButtonForChanges from "../components/SaveButtonForChanges";
@@ -8,26 +8,62 @@ import SwitchButton from "../components/SwitchButton";
 import Todo from "../components/Todo";
 import AddModal from "../components/AddModal";
 import LoadingSpinner from "../components/LoadingSpinner";
+import TodosScreenOptions from "../components/TodosScreenOptions";
 import { setTodos, clearTodos } from "../redux/todosSlice";
+import { setAccountCredentialsOnFirebase } from "../redux/userSlice";
+import check_verification_time from "../utils/check_verification_time";
 
-import { auth, signOut, db, doc, getDoc } from "../firebase";
+import {
+	auth,
+	signOut,
+	db,
+	doc,
+	getDoc,
+	deleteDoc,
+	deleteUser,
+} from "../firebase";
 
 const TodosScreen = () => {
 	const dispatch = useDispatch();
 	const [goodToGo, setGoodToGo] = useState(false);
 
 	useEffect(() => {
-		const getTodosFromFirestore = async () => {
-			const todosSnap = await getDoc(doc(db, "users", auth.currentUser?.uid));
-			console.log(auth);
+		// if (auth) {
+		//im checking auth for production build error: java.util.NoSuchElementException: No value present
 
-			if (todosSnap.exists()) {
-				const todos = await todosSnap.data().todos;
+		const getTodosFromFirestore = async () => {
+			const docSnap = await getDoc(doc(db, "users", auth.currentUser?.uid));
+			// console.log("auth: ", auth);
+
+			if (docSnap.exists()) {
+				const account_created_time = await docSnap.data().accountCreated;
+				const account_email = await docSnap.data().accountEmail;
+
+				// console.log("docsnap existmis: ");
+				// console.log("account_created_time:", account_created_time);
+				// console.log("account_email:", account_email);
+
+				dispatch(
+					setAccountCredentialsOnFirebase({
+						account_created_time: account_created_time,
+						account_email: account_email,
+					})
+				);
+
+				const todos = await docSnap.data().todos;
 
 				todos.sort((x, y) => x.todoId - y.todoId);
 
 				dispatch(setTodos(todos));
+
 				setGoodToGo(true);
+
+				// console.log("emailVerified:", auth.currentUser.emailVerified);
+
+				if (!auth.currentUser.emailVerified) {
+					if (!check_verification_time(account_created_time))
+						handle_delete_account();
+				}
 			} else {
 				dispatch(clearTodos());
 				setGoodToGo(true);
@@ -35,9 +71,12 @@ const TodosScreen = () => {
 		};
 
 		getTodosFromFirestore();
+		// }
 	}, []);
 
 	const [addModalVisibility, setAddModalVisibility] = useState(false);
+	const [options_modal_visibility, set_options_modal_visibility] =
+		useState(false);
 
 	const todos = useSelector((state) => state.todosReducer.todos);
 	const themes = useSelector((state) => state.userReducer.themes);
@@ -66,6 +105,19 @@ const TodosScreen = () => {
 
 	const handleLogOut = async () => {
 		signOut(auth).catch((err) => console.log(err.message));
+	};
+
+	const handle_todos_screen_options_visibility = () =>
+		set_options_modal_visibility(!options_modal_visibility);
+
+	const handle_delete_account = async () => {
+		const todosSnap = await getDoc(doc(db, "users", auth.currentUser?.uid));
+
+		if (todosSnap.exists()) {
+			await deleteDoc(doc(db, "users", auth.currentUser?.uid));
+		}
+
+		await deleteUser(auth.currentUser);
 	};
 
 	return goodToGo ? (
@@ -134,9 +186,17 @@ const TodosScreen = () => {
 						/>
 					</TouchableOpacity>
 
-					<TouchableOpacity onPress={handleLogOut}>
+					{/* <TouchableOpacity onPress={handleLogOut}>
 						<AntDesign
 							name="logout"
+							size={24}
+							color={themes[preferredTheme].text}
+						/>
+					</TouchableOpacity> */}
+
+					<TouchableOpacity onPress={handle_todos_screen_options_visibility}>
+						<SimpleLineIcons
+							name="options"
 							size={24}
 							color={themes[preferredTheme].text}
 						/>
@@ -170,6 +230,16 @@ const TodosScreen = () => {
 				modalVisible={addModalVisibility}
 				themes={themes[preferredTheme]}
 				handleAddModalVisibility={handleAddModalVisibility}
+			/>
+
+			<TodosScreenOptions
+				options_modal_visibility={options_modal_visibility}
+				handle_todos_screen_options_visibility={
+					handle_todos_screen_options_visibility
+				}
+				themes={themes[preferredTheme]}
+				handleLogOut={handleLogOut}
+				handle_delete_account={handle_delete_account}
 			/>
 		</View>
 	) : (

@@ -18,9 +18,15 @@ const SaveButtonForChanges = () => {
 
 	const todos = useSelector((state) => state.todosReducer.todos);
 
+	const account_credentials_on_firebase = useSelector(
+		(state) => state.userReducer.accountCredentialsOnFirebase
+	);
+
 	const handle_save = async () => {
 		dispatch(change_save_button_visibility_for_changes(false));
 		await setDoc(doc(db, "users", auth.currentUser.uid), {
+			accountEmail: account_credentials_on_firebase.accountEmailOnFirebase,
+			accountCreated: account_credentials_on_firebase.accountCreatedOnFirebase,
 			todos: todos,
 		});
 	};
