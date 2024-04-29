@@ -22,11 +22,15 @@ Kullanıcı çıkış yapmadığı sürece cihazında hatırlanması için: reac
 
 Projede, kullanıcı giriş yapdıktan sonra yapılacaklar listesi sayfası karşısına çıkıyor. Burada yeni madde ekleyebilir, var olanları güncelleyebilir veya silebilir. Ancak belli bir miktar yeni madde ekledikten sonra karşısına premium üyelik gerektiğini belirten bir katman çıkıyor. Ödeme yapıp üye olduktan sonra eklemeye devam edebiliyor.
 
+Uygulamam kapalı test aşamasında, eğer indirmek isterseniz uygulamanın size görünebilmesi için Google gruplara giriş yapıp todo-list-test@googlegroups.com grubuna katılmalısınız. Daha sonra şu link üzerinden indirip bakabilirsiniz: https://play.google.com/store/apps/details?id=com.ibrahimkeles.todolist
+
 ## Görseller
 
 Henüz ödeme kısmı bitmediği için bu son hali değil ama şu anki hali şu şekilde:
 
 https://www.youtube.com/watch?v=4Bc3GxLIrRg
+
+
 
 
 
